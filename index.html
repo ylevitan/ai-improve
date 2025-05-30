@@ -72,34 +72,31 @@
     <p>Exploring how AI transforms Travel, Art, and Robotics</p>
   </div>
 
-  <!-- Start of main content container -->
   <div class="container">
+    <div class="row section g-4" id="travel">
+      <div class="col-12">
+        <h2 class="section-title">✈️ Travel</h2>
+        <ul>
+          <li>Smart itinerary planner</li>
+          <li>AI language & culture guides</li>
+          <li>Personalized travel companions</li>
+        </ul>
+        <p>
+          <a href="travel.html" class="esp-button">Try the AI Travel Itinerary Planner →</a>
+        </p>
+      </div>
 
-  <div class="row section" id="travel">
-  <div class="col-12">
-    <h2 class="section-title">✈️ Travel</h2>
-    <ul>
-      <li>Smart itinerary planner</li>
-      <li>AI language & culture guides</li>
-      <li>Personalized travel companions</li>
-    </ul>
-    <p>
-      <a href="travel.html" class="esp-button">Try the AI Travel Itinerary Planner →</a>
-    </p>
-  </div>
+      <div class="col-md-6">
+        <h5 class="mt-4 mb-3">🔍 Search Flights</h5>
+        <div id="flights-widget-container"></div>
+      </div>
 
-  <div class="col-md-6">
-    <h5 class="mt-4 mb-3">🔍 Search Flights</h5>
-    <script async src="https://tp.media/content?promo_id=4055&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8" charset="utf-8"></script>
-  </div>
+      <div class="col-md-6">
+        <h5 class="mt-4 mb-3">🏨 Search Hotels</h5>
+        <div id="hotels-widget-container"></div>
+      </div>
+    </div>
 
-  <div class="col-md-6">
-    <h5 class="mt-4 mb-3">🏨 Search Hotels</h5>
-    <script async src="https://tp.media/content?promo_id=4343&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8" charset="utf-8"></script>
-  </div>
-</div>
-
-    
     <div class="row section" id="art">
       <div class="col-md-6">
         <h2 class="section-title">🎨 Art</h2>
@@ -124,13 +121,29 @@
         <a href="https://huggingface.co/spaces/ylevitan11/esp-by-fun" target="_blank" class="esp-button">💬 Launch ESP_BY_FUN AI Agent</a>
       </div>
     </div>
-
-  </div> <!-- End of .container -->
+  </div>
 
   <div class="footer">
     <p>Have an idea or collaboration? Contact: <a href="mailto:ylevitan@ai-improve.com">ylevitan@ai-improve.com</a></p>
     <p>&copy; 2025 AI-Improve.com</p>
   </div>
+
+  <!-- Load Travelpayouts Widgets after DOM ready -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const flightScript = document.createElement('script');
+      flightScript.src = "https://tp.media/content?promo_id=4055&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8";
+      flightScript.async = true;
+      flightScript.charset = "utf-8";
+      document.getElementById("flights-widget-container").appendChild(flightScript);
+
+      const hotelScript = document.createElement('script');
+      hotelScript.src = "https://tp.media/content?promo_id=4343&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8";
+      hotelScript.async = true;
+      hotelScript.charset = "utf-8";
+      document.getElementById("hotels-widget-container").appendChild(hotelScript);
+    });
+  </script>
 
 </body>
 </html>
