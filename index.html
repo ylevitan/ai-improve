@@ -88,12 +88,12 @@
 
       <div class="col-md-6">
         <h5 class="mt-4 mb-3">🔍 Search Flights</h5>
-        <script async src="https://tp.media/content?promo_id=4055&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8" charset="utf-8"></script>
+        <div id="flights-widget"></div>
       </div>
 
       <div class="col-md-6">
         <h5 class="mt-4 mb-3">🏨 Search Hotels</h5>
-        <script async src="https://tp.media/content?promo_id=4343&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8" charset="utf-8"></script>
+        <div id="hotels-widget"></div>
       </div>
     </div>
 
@@ -127,6 +127,23 @@
     <p>Have an idea or collaboration? Contact: <a href="mailto:ylevitan@ai-improve.com">ylevitan@ai-improve.com</a></p>
     <p>&copy; 2025 AI-Improve.com</p>
   </div>
+
+  <!-- Final reliable Travelpayouts widget injection -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const flightWidget = document.createElement('script');
+      flightWidget.src = "https://tp.media/content?promo_id=4055&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8";
+      flightWidget.async = true;
+      flightWidget.charset = "utf-8";
+      document.getElementById("flights-widget").appendChild(flightWidget);
+
+      const hotelWidget = document.createElement('script');
+      hotelWidget.src = "https://tp.media/content?promo_id=4343&shmarker=636331&type=widget&campaign_id=101&locale=en&powered_by=true&primary=%232563eb&border_radius=8";
+      hotelWidget.async = true;
+      hotelWidget.charset = "utf-8";
+      document.getElementById("hotels-widget").appendChild(hotelWidget);
+    });
+  </script>
 
 </body>
 </html>
