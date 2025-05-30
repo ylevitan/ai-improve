@@ -32,8 +32,7 @@
       margin-bottom: 30px;
     }
 
-    .esp-button,
-    .travelpayout-button {
+    .esp-button {
       display: inline-block;
       background-color: #2563eb;
       color: white;
@@ -46,8 +45,7 @@
       transition: background-color 0.3s ease;
     }
 
-    .esp-button:hover,
-    .travelpayout-button:hover {
+    .esp-button:hover {
       background-color: #1d4ed8;
     }
   </style>
@@ -75,8 +73,8 @@
   </div>
 
   <div class="container">
-    <div class="row section" id="travel">
-      <div class="col-md-6">
+    <div class="row section g-4" id="travel">
+      <div class="col-12">
         <h2 class="section-title">✈️ Travel</h2>
         <ul>
           <li>Smart itinerary planner</li>
@@ -86,9 +84,24 @@
         <p>
           <a href="travel.html" class="esp-button">Try the AI Travel Itinerary Planner →</a>
         </p>
-        <p>
-          <a href="https://www.travelpayouts.com/widgets/flight" target="_blank" class="travelpayout-button">Book Flights with Travelpayouts →</a>
-        </p>
+      </div>
+
+      <div class="col-md-6">
+        <h5 class="mt-4 mb-3">🔍 Search Flights</h5>
+        <iframe 
+          src="https://www.travelpayouts.com/widgets/iframe/flight?marker=421887&host=search.travelpayouts.com&locale=en" 
+          style="width:100%; height:400px; border:none;" 
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <div class="col-md-6">
+        <h5 class="mt-4 mb-3">🏨 Search Hotels</h5>
+        <iframe 
+          src="https://www.travelpayouts.com/widgets/iframe/hotel?marker=421887&host=search.travelpayouts.com&locale=en" 
+          style="width:100%; height:400px; border:none;" 
+          loading="lazy">
+        </iframe>
       </div>
     </div>
 
@@ -125,4 +138,3 @@
 
 </body>
 </html>
-
