@@ -77,7 +77,7 @@
         </p>
       </div>
 
-      <!-- NEW AI GEOLOCATION FEATURE -->
+      <!-- NEW GEOLOCATION + WIKIPEDIA SECTION -->
       <div class="col-12 mt-4">
         <h5 class="mb-3">📍 WhereWise AI Travel Companion</h5>
         <button class="esp-button" onclick="getLocation()">Find Out Where I Am</button>
@@ -125,45 +125,61 @@
       }
     }
 
-function showPosition(position) {
-  const lat = position.coords.latitude;
-  const lon = position.coords.longitude;
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
 
-  // Display lat/lon immediately
-  document.getElementById("location-output").innerHTML =
-    `📌 Coordinates: Latitude ${lat.toFixed(5)}, Longitude ${lon.toFixed(5)}<br>Looking up city...`;
-
-  // Use Nominatim for reverse geocoding
-  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-    .then(response => response.json())
-    .then(locationData => {
-      const address = locationData.address;
-      const city = address.city || address.town || address.village || address.hamlet || "Unknown";
-      const country = address.country || "";
-
-      // Update display to include city
       document.getElementById("location-output").innerHTML =
-        `📍 You are in <strong>${city}, ${country}</strong><br>📌 Latitude: ${lat.toFixed(5)}, Longitude: ${lon.toFixed(5)}<br>Getting local stories...`;
+        `📌 Coordinates: Latitude ${lat.toFixed(5)}, Longitude ${lon.toFixed(5)}<br>Looking up city...`;
 
-      // Optional: Send to AI backend with city
-      fetch("http://localhost:8000/get-ai-info", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lat, lon, city })
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("location-output").innerHTML += `<br><br><strong>🧠 AI says:</strong><br>${data.message}`;
-      })
-      .catch(err => {
-        document.getElementById("location-output").innerHTML += "<br><br>⚠️ Could not connect to the AI service.";
-      });
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+        .then(response => response.json())
+        .then(locationData => {
+          const address = locationData.address;
+          const city = address.city || address.town || address.village || address.hamlet || "Unknown";
+          const country = address.country || "";
 
-    })
-    .catch(error => {
-      document.getElementById("location-output").innerHTML += "<br><br>⚠️ Failed to retrieve city name.";
-    });
-}
+          document.getElementById("location-output").innerHTML =
+            `📍 You are in <strong>${city}, ${country}</strong><br>📌 Latitude: ${lat.toFixed(5)}, Longitude: ${lon.toFixed(5)}<br>Getting local stories...`;
+
+          // AI backend call
+          fetch("http://localhost:8000/get-ai-info", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lat, lon, city })
+          })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("location-output").innerHTML += `<br><br><strong>🧠 AI says:</strong><br>${data.message}`;
+          });
+
+          // Wikipedia summary
+          getWikipediaSummary(city);
+        })
+        .catch(error => {
+          document.getElementById("location-output").innerHTML += "<br><br>⚠️ Failed to retrieve city name.";
+        });
+    }
+
+    function getWikipediaSummary(city) {
+      const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(city)}`;
+
+      fetch(wikiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.extract) {
+            document.getElementById("location-output").innerHTML += `
+              <br><br><strong>📚 From Wikipedia:</strong><br>${data.extract}
+              <br><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(city)}" target="_blank">Read more on Wikipedia →</a>
+            `;
+          } else {
+            document.getElementById("location-output").innerHTML += "<br><br>📚 No Wikipedia summary found.";
+          }
+        })
+        .catch(err => {
+          document.getElementById("location-output").innerHTML += "<br><br>⚠️ Could not load Wikipedia summary.";
+        });
+    }
 
     function showError(error) {
       let message = "";
