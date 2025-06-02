@@ -155,19 +155,32 @@
         });
     }
 
-    function getLocalTime(lat, lon) {
-      const url = `https://worldtimeapi.org/api/timezone/Etc/GMT`;
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          if (data.datetime) {
-            const time = new Date(data.datetime).toLocaleString();
-            document.getElementById("location-output").innerHTML += `
-              <br><br><strong>🕰️ Local time:</strong><br>${time}
-            `;
-          }
-        });
-    }
+   
+function getLocalTime(lat, lon) {
+  const url = `https://api.wheretheiss.at/v1/coordinates/${lat},${lon}`; // get timezone name
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const timezone = data.timezone_id;
+      return fetch(`https://worldtimeapi.org/api/timezone/${timezone}`);
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.datetime) {
+        const time = new Date(data.datetime).toLocaleString();
+        document.getElementById("location-output").innerHTML += `
+          <br><br><strong>🕰️ Local time:</strong><br>${time}
+        `;
+      } else {
+        document.getElementById("location-output").innerHTML += "<br><br>⚠️ Could not retrieve time.";
+      }
+    })
+    .catch(() => {
+      document.getElementById("location-output").innerHTML += "<br><br>⚠️ Time lookup failed.";
+    });
+}
+
 
     function getAnecdote(city) {
       const OPENAI_API_KEY = 'sk-REPLACE_THIS'; // Replace with your OpenAI key or use a serverless proxy
