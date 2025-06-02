@@ -116,19 +116,10 @@
           document.getElementById("location-output").innerHTML =
             `📍 You are in <strong>${city}, ${country}</strong><br>📌 Latitude: ${lat.toFixed(5)}, Longitude: ${lon.toFixed(5)}<br>Gathering stories, weather, and time...`;
 
-          fetch("http://localhost:8000/get-ai-info", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ lat, lon, city, mode: "anecdotes" })
-          })
-          .then(response => response.json())
-          .then(data => {
-            document.getElementById("location-output").innerHTML += `<br><br><strong>🧠 AI says:</strong><br>${data.message}`;
-          });
-
           getWikipediaSummary(city);
           getWeather(lat, lon);
           getLocalTime(lat, lon);
+          getAnecdote(city);
         })
         .catch(() => {
           document.getElementById("location-output").innerHTML += "<br><br>⚠️ Failed to retrieve city name.";
@@ -165,19 +156,49 @@
     }
 
     function getLocalTime(lat, lon) {
-      const url = `https://api.timezonedb.com/v2.1/get-time-zone?key=YOUR_TIMEZONEDB_API_KEY&format=json&by=position&lat=${lat}&lng=${lon}`;
+      const url = `https://worldtimeapi.org/api/timezone/Etc/GMT`;
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          if (data.formatted) {
+          if (data.datetime) {
+            const time = new Date(data.datetime).toLocaleString();
             document.getElementById("location-output").innerHTML += `
-              <br><br><strong>🕰️ Local time:</strong><br>${data.formatted}
+              <br><br><strong>🕰️ Local time:</strong><br>${time}
             `;
           }
-        })
-        .catch(() => {
-          document.getElementById("location-output").innerHTML += "<br><br>⚠️ Time lookup failed.";
         });
+    }
+
+    function getAnecdote(city) {
+      const OPENAI_API_KEY = 'sk-REPLACE_THIS'; // Replace with your OpenAI key or use a serverless proxy
+      fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [
+            {
+              role: "system",
+              content: "You are a witty travel storyteller. You tell light, amusing anecdotes about famous people from cities."
+            },
+            {
+              role: "user",
+              content: `Tell me a short, funny or heartwarming story about a famous person from ${city}.`
+            }
+          ]
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const story = data.choices?.[0]?.message?.content || "No story found.";
+        document.getElementById("location-output").innerHTML += `<br><br><strong>🎭 Anecdote:</strong><br>${story}`;
+      })
+      .catch(() => {
+        document.getElementById("location-output").innerHTML += "<br><br>⚠️ Failed to load anecdote.";
+      });
     }
 
     function showError(error) {
