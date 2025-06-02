@@ -125,16 +125,31 @@
       }
     }
 
-    function showPosition(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      document.getElementById("location-output").innerHTML = 
-        `📌 You are here: Latitude ${lat.toFixed(5)}, Longitude ${lon.toFixed(5)}.<br>Getting local stories...`;
+function showPosition(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
 
+  // Display lat/lon immediately
+  document.getElementById("location-output").innerHTML =
+    `📌 Coordinates: Latitude ${lat.toFixed(5)}, Longitude ${lon.toFixed(5)}<br>Looking up city...`;
+
+  // Use Nominatim for reverse geocoding
+  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+    .then(response => response.json())
+    .then(locationData => {
+      const address = locationData.address;
+      const city = address.city || address.town || address.village || address.hamlet || "Unknown";
+      const country = address.country || "";
+
+      // Update display to include city
+      document.getElementById("location-output").innerHTML =
+        `📍 You are in <strong>${city}, ${country}</strong><br>📌 Latitude: ${lat.toFixed(5)}, Longitude: ${lon.toFixed(5)}<br>Getting local stories...`;
+
+      // Optional: Send to AI backend with city
       fetch("http://localhost:8000/get-ai-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lat, lon })
+        body: JSON.stringify({ lat, lon, city })
       })
       .then(response => response.json())
       .then(data => {
@@ -143,7 +158,12 @@
       .catch(err => {
         document.getElementById("location-output").innerHTML += "<br><br>⚠️ Could not connect to the AI service.";
       });
-    }
+
+    })
+    .catch(error => {
+      document.getElementById("location-output").innerHTML += "<br><br>⚠️ Failed to retrieve city name.";
+    });
+}
 
     function showError(error) {
       let message = "";
