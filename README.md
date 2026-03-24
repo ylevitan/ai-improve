@@ -1,44 +1,20 @@
----
-title: ESP_BY_FUN
-emoji: 🤖
-colorFrom: indigo
-colorTo: blue
-sdk: gradio
-sdk_version: "3.41.2"
-app_file: app.py
-pinned: false
----
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-# 🤖 ESP_BY_FUN
+# Run and deploy your AI Studio app
 
-Welcome to **ESP_BY_FUN**, your AI assistant trained on real documentation from Blue Yonder Enterprise Supply Planning (ESP).
+This contains everything you need to run your app locally.
 
-This is part of [www.ai-improve.com](https://www.ai-improve.com) — a platform showcasing how AI can elevate complex planning, operations, and supply chain logic.
+View your app in AI Studio: https://ai.studio/apps/089de99e-0562-4ab5-a269-4e52b16a15cc
 
-## 🧠 What ESP_BY_FUN Can Do:
+## Run Locally
 
-- Answer questions about SCPO, LPOpt, MAP Solver
-- Explain user interface fields and ESP data model
-- Interpret planning logic, BOM, sourcing rules
-- Pull context from multiple training documents
+**Prerequisites:**  Node.js
 
-## 🚀 Built with:
 
-- LangChain + OpenAI
-- FAISS Vector DB
-- Gradio UI
-- Deployed on Hugging Face Spaces
-
-## 🔐 Secure API
-Make sure you've added your OpenAI key as a secret in Hugging Face:
-
-| Name | Value |
-|------|-------|
-| `OPENAI_API_KEY` | `sk-...` from [OpenAI](https://platform.openai.com/account/api-keys) |
-
-## 🌐 Embed on your site:
-
-```html
-<a href="https://huggingface.co/spaces/ylevitan11/esp-by-fun" target="_blank">
-  💬 Launch ESP_BY_FUN AI Agent
-</a>
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
